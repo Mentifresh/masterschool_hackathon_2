@@ -37,12 +37,28 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
 ### Modules Planning
 
 - OpenAI Module (input: image and/or text, output: text with links)
-
   - Connect to OpenAI
   - Define intructions
   - first return a list of possible recipes
   - after recipe confirmation, generate full recipe
   - return full recipe
+
+1.  [
+    {
+    'name':
+    ...
+    }
+    ]
+
+2.  [
+    {
+    'name': 'Spaguetti',
+    'receipt': 'asdasfa',
+    'img_url': 'https://...',
+    'youtube_url': 'https://...',
+    ...
+    }
+    ]
 
 - Twilio Module (input: text with links, ouput: image and/or text)
 
@@ -52,6 +68,7 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
   - if new messages, return them
 
 - Flask app (server -- main.py) (Is there any rate limiting?)
+
   - Initiate Twilio
   - Check for messages
   - If there is a message:
@@ -60,7 +77,8 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
     - Forward to back to user
   - Received recipes can be stored as json
 
+  - Add a website with saved (jinja templates)!
+
 ### Optional tasks
 
-- Add a website with saved (jinja templates)!
 - third API service for recipes
