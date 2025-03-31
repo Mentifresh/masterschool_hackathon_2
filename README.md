@@ -56,9 +56,15 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
     'receipt': 'asdasfa',
     'img_url': 'https://...',
     'youtube_url': 'https://...',
+    'vitaminen': '',
     ...
     }
     ]
+
+- Data Module
+
+  - Write json
+  - read json
 
 - Twilio Module (input: text with links, ouput: image and/or text)
 
@@ -75,9 +81,8 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
     - Forward to openAI
     - Get Answer
     - Forward to back to user
-  - Received recipes can be stored as json
 
-  - Add a website with saved (jinja templates)!
+- Add a website with saved (jinja templates)!
 
 ### Optional tasks
 
