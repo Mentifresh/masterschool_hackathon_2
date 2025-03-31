@@ -1,0 +1,4 @@
+Flask
+Twilio
+Openai
+dotenv
