@@ -62,5 +62,5 @@ NutriScan makes healthy cooking easier by providing nutritional insights for you
 
 ### Optional tasks
 
-- Add a website with saved (jinja templates)
+- Add a website with saved (jinja templates)!
 - third API service for recipes
