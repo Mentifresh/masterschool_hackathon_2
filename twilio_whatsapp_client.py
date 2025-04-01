@@ -19,8 +19,8 @@ class WhatsAppBot:
         # Initialize conversation
         self.conversation = None
         self.last_processed_messages = set()  # Track messages by SID
-        self.your_whatsapp = "whatsapp:+4917622933043"
-        self.twilio_whatsapp = "whatsapp:+493041736523"
+        self.your_whatsapp = os.environ["your_whatsapp"]
+        self.twilio_whatsapp = os.environ["twilio_whatsapp"]
         
         # Store the callback function
         self.message_callback = message_callback
