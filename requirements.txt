@@ -1,4 +1,10 @@
+
 Flask
 Twilio
 Openai
 dotenv
+requests
+
+
+
+
