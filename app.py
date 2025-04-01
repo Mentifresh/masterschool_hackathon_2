@@ -19,7 +19,7 @@ if __name__ == "__main__":
         bot.setup_conversation()
         
         # Send a welcome message
-        bot.send_message("NutriScan is now active!")
+        # bot.send_message("NutriScan is now active!")
         
         # Start polling for new messages (will run indefinitely)
         bot.poll_for_new_messages(5)  # Check every 5 seconds
