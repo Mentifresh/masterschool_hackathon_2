@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriScan</title>
+    <link rel="stylessheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Mein Lieblingsrezept</h1>
+    </header>
+    <p>{{recipes}}</p>
+    <div class="recipe-block">
+        {% for recipe in all_found_recipes %}
+            <article>
+                <h2 class="recipe--block-title">{{ recipe["name"] }}</h2>
+                <img class="recipe-bild" src="{{ url_for('static', filename=recipe['bild']) }}" alt="{{ recipe["name"] }}">
+                <p> {{ recipe["name"] }} ... Genuss pur!</p>  
+            </article>
+        {% endfor %}  
+    </div>
+</body>
+</html>
