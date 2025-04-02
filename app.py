@@ -5,7 +5,9 @@ from api_spoon import find_recipes_by_ingredients, get_detailed_recipes
 import re
 import random
 import os
+import threading
 from dotenv import load_dotenv
+from flask_app import app as flask_app
 
 # Load environment variables
 load_dotenv()
@@ -409,16 +411,26 @@ class WhatsAppFoodApp:
         except Exception as e:
             print(f"Error in main application: {e}")
 
+def run_flask_app():
+    """Run Flask web app in a separate thread"""
+    flask_app.run(host='0.0.0.0', port=3007, debug=False, use_reloader=False)
+
 # Run the application when executed directly
 if __name__ == "__main__":
     print("=== Welcome to NutriScan ===")
     print("I'll help you find recipes based on the ingredients you have.")
     print("Starting the application...\n")
     
-    # Initialize the application
+    # Start Flask web app in a separate thread
+    flask_thread = threading.Thread(target=run_flask_app)
+    flask_thread.daemon = True
+    flask_thread.start()
+    print("Web interface started at http://localhost:3007")
+    
+    # Initialize the WhatsApp application
     app = WhatsAppFoodApp()
     
-    # Start the application
+    # Start the WhatsApp application
     app.run()
 
 

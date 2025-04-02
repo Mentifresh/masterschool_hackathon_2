@@ -114,6 +114,31 @@
             "There"
           ],
           "saved_at": "2025-04-02T18:44:05.637742"
+        },
+        {
+          "rezeptname": "Watermelon, Feta And Mint Salad",
+          "bild_url": "https://img.spoonacular.com/recipes/665041-556x370.jpg",
+          "gesundheitsbewertung": 39.0,
+          "rezept_url": "https://www.foodista.com/recipe/QHTL4ZZS/watermelon-feta-and-mint-salad",
+          "video_url": "Kein Video verfügbar",
+          "zubereitung": [
+            "Cut the watermelon into big wedges, then cut the flesh away from the skin. Slice the flesh into bite sized pieces.",
+            "Cut the cucumber in half then half lengthways too. Use a potato peeler to slice ribbons off the cucumber.Arrange the lettuce leaves in a large bowl, top with the watermelon, cucumber, feta and mint.Finally place all the dressing ingredients together (juice of 1/2 lemon, olive oil, honey) in a small bowl and whisk together with a fork. Season to taste.",
+            "Drizzle the dressing over the salad and serve."
+          ],
+          "zutaten": [
+            "1 tbsp clear honey",
+            "1/2 cucumber, washed",
+            "1 head curly leaf lettuce",
+            "1 package feta cheese, sliced",
+            "3 tbsp chopped fresh mint",
+            "1/2 lemon",
+            "4 tbsp olive oil",
+            "pepper",
+            "salt",
+            "1 pound ripe watermelon"
+          ],
+          "saved_at": "2025-04-02T19:08:54.799423"
         }
       ]
     }

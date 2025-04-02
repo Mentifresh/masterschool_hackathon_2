@@ -1,89 +1,58 @@
-# masterschool_hackathon_2
+# NutriScan Recipe App
 
-# NutriScan
-
-A smart application that helps you discover recipes while keeping track of nutritional values.
-NutriScan makes healthy cooking easier by providing nutritional insights for your meals.
+NutriScan is a WhatsApp-based recipe suggestion tool with a web interface for viewing saved recipes.
 
 ## Features
 
-- Recipe suggestions based on available ingredients
-- Detailed nutritional information for each recipe
-- Easy-to-follow cooking instructions
-- Customizable dietary preferences
+- WhatsApp bot that suggests recipes based on ingredients (via text or image)
+- Web interface to view and browse saved recipes
+- Detailed recipe pages with ingredients, instructions, and links to original sources
 
-## Getting Started
+## Setup
 
-### Prerequisites
+1. Install dependencies:
 
-- Python
+   ```
+   pip install -r requirements.txt
+   ```
 
-### Installation
+2. Make sure your `.env` file has the following variables:
 
-1. Clone the repository
+   ```
+   # Twilio
+   conversation_service_id=your_conversation_service_id
+   account_sid=your_account_sid
+   api_key_sid=your_api_key_sid
+   api_key_secret=your_api_key_secret
 
-2. Set up environment variables:
+   # OpenAI
+   openai_api_key=your_openai_api_key
 
-   - Make a copy of `.env.example` and rename it to `.env`
-   - Keep the `.env.example` file for reference
-   - Add your API keys and other required values to the `.env` file
+   # Spoonacular
+   SPOONACULAR_API_KEY=your_spoonacular_api_key
 
-3. Install dependencies:
-   TO BE ADDED
+   # WhatsApp
+   your_whatsapp="whatsapp:+your_phone_number"
+   twilio_whatsapp="whatsapp:+twilio_phone_number"
+   ```
 
-4. Start the development server:
-   TO BE ADDED
+3. Run the application:
 
-### Modules Planning
+   ```
+   python app.py
+   ```
 
-- OpenAI Module (input: image and/or text, output: text with links)
-  - Connect to OpenAI
-  - Define intructions
-  - first return a list of possible recipes
-  - after recipe confirmation, generate full recipe
-  - return full recipe
+4. Access the web interface at: `http://localhost:3007`
 
-1.  [
-    {
-    'name':
-    ...
-    }
-    ]
+## Usage
 
-2.  [
-    {
-    'name': 'Spaguetti',
-    'receipt': 'asdasfa',
-    'img_url': 'https://...',
-    'youtube_url': 'https://...',
-    'vitaminen': '',
-    ...
-    }
-    ]
+### WhatsApp Bot
 
-- Data Module
+- Send a list of ingredients as text (e.g., "chicken, rice, tomatoes")
+- Or send a photo of your ingredients
+- Select recipes by responding with a number (1, 2, or 3)
 
-  - Write json
-  - read json
+### Web Interface
 
-- Twilio Module (input: text with links, ouput: image and/or text)
-
-  - Connect to twilio
-  - start polling (fetch messages)
-  - save messages
-  - if new messages, return them
-
-- Flask app (server -- main.py) (Is there any rate limiting?)
-
-  - Initiate Twilio
-  - Check for messages
-  - If there is a message:
-    - Forward to openAI
-    - Get Answer
-    - Forward to back to user
-
-- Add a website with saved (jinja templates)!
-
-### Optional tasks
-
-- third API service for recipes
+- View all saved recipes at the home page
+- Click on a recipe to see detailed instructions and ingredients

@@ -1,9 +1,9 @@
-
-Flask
-Twilio
-Openai
-dotenv
+flask
+python-dotenv
+twilio
+openai
 requests
+Pillow
 
 
 
