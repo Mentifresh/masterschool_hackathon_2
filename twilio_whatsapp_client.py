@@ -191,7 +191,7 @@ if __name__ == "__main__":
     bot.setup_conversation()
     
     # Test message
-    # bot.send_message("Hello from the WhatsApp Bot!")
+    bot.send_message("Hello from the WhatsApp Bot!")
     
     # Start polling for new messages every 5 seconds
     bot.poll_for_new_messages(5)

@@ -61,6 +61,7 @@ def get_detailed_recipes(ingredients, number=3):
         detail_data = detail_response.json()
         daten = {
             "rezeptname": detail_data.get("title"),
+            "bild_url": detail_data.get("image"),
             "gesundheitsbewertung": detail_data.get("healthScore"),
             "rezept_url": detail_data.get("sourceUrl"),
             "video_url": detail_data.get("video", "Kein Video verfügbar"),
