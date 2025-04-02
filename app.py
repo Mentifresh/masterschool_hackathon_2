@@ -10,9 +10,13 @@ def handle_message(message):
     if hasattr(message, 'author') and message.author == "system":
         return
     
+    message_text = None
+    image_location = None
+    
     # Handle text message
     if hasattr(message, 'body'):
         print(f"📱 Message received: {message.body}")
+        message_text = message.body
     
     # Handle images
     media_list = []
@@ -33,7 +37,7 @@ def handle_message(message):
             else getattr(media_item, 'sid', 'unknown')
         )
         
-        # Only process images
+        # We can potentially extract any kind of media here
         if media_type.startswith('image/'):
             print(f"📸 Processing image...")
             local_file = data_manager.save_media_to_img_folder(
@@ -46,6 +50,15 @@ def handle_message(message):
             
             if local_file:
                 print(f"✅ Image saved: {local_file}")
+                image_location = local_file
+    
+    ############################
+    # Here we can plug in OpenAI
+    ############################
+    if image_location:
+        print(f"Image saved at: {image_location}")
+    elif message_text:
+        print(f"Text message: {message_text}")
 
 # Create the bot with our message handler
 bot = WhatsAppBot(message_callback=handle_message)
