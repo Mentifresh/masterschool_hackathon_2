@@ -8,7 +8,7 @@ import requests
 load_dotenv()
 
 # OpenAI-Client initialisieren
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("openai_api_key"))
 
 def get_recipe_suggestions(lebensmittel_liste):
     """
