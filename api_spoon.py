@@ -37,7 +37,6 @@ def find_recipes_by_ingredients(ingredients, number=3, ranking=1, ignore_pantry=
 def get_detailed_recipes(ingredients, number=3):
     """
     Führt eine erweiterte Rezeptsuche durch, inklusive Gesundheitsdaten, Rezeptlink und Anleitung.
-    Speichert die Ergebnisse als separate JSON-Dateien.
     """
     rezepte = find_recipes_by_ingredients(ingredients, number=number)
     ergebnisse = []
@@ -61,6 +60,7 @@ def get_detailed_recipes(ingredients, number=3):
         detail_data = detail_response.json()
         daten = {
             "rezeptname": detail_data.get("title"),
+            "bild_url": detail_data.get("image"),
             "gesundheitsbewertung": detail_data.get("healthScore"),
             "rezept_url": detail_data.get("sourceUrl"),
             "video_url": detail_data.get("video", "Kein Video verfügbar"),
@@ -68,11 +68,6 @@ def get_detailed_recipes(ingredients, number=3):
             "zutaten": [z["original"] for z in detail_data.get("extendedIngredients", [])],
             "nutrition": detail_data.get("nutrition", {})
         }
-
-        safe_title = detail_data.get("title", "rezept").replace(" ", "_").replace("/", "-")
-        filename = f"nutriscan_{safe_title}.json"
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(daten, f, ensure_ascii=False, indent=2)
 
         ergebnisse.append(daten)
 
