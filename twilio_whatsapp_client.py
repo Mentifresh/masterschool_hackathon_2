@@ -33,9 +33,22 @@ class WhatsAppBot:
         print("Checking for existing conversations...")
         for conv in conversations:
             print(f"Found conversation: {conv.sid} - {conv.friendly_name}")
-            # We'll use the first conversation we find
-            if not self.conversation:
-                self.conversation = conv
+            
+            # Check if this conversation has the user's WhatsApp number as a participant
+            participants = self.client.conversations.v1.services(self.service_sid).conversations(
+                conv.sid
+            ).participants.list()
+            
+            for participant in participants:
+                # Check if this participant's address matches your WhatsApp number
+                if (hasattr(participant, 'messaging_binding') and 
+                    participant.messaging_binding.get('address') == self.your_whatsapp):
+                    print(f"Found conversation with your WhatsApp number: {conv.sid}")
+                    self.conversation = conv
+                    break
+            
+            # If we found our conversation, break out of the outer loop too
+            if self.conversation:
                 break
 
         # If no conversations exist, create a new one
