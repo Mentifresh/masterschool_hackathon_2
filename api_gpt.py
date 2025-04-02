@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("openai_api_key"))
 
 def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list = None) -> list:
     """
@@ -31,7 +31,7 @@ def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list =
                     "content": [
                         {
                             "type": "text",
-                            "text": "You are helping to suggest a recipe based on a fridge photo. Only list food ingredients that are suitable for cooking a proper dish. Exclude drinks, jars, sauces, and non-edible items. Focus on visible fruits, vegetables, dairy, meats, and other fresh food. Only return a short, comma-separated list in English, no explanations."
+                            "text": "You are a professional chef and nutritionist helping people make meals from what they have in their fridge. Analyze the image of the fridge content. If you see clear food ingredients like fruits, vegetables, dairy, or meat, respond with a list of ingredients like: INGREDIENTS: ingredient1, ingredient2, ingredient3.\n If no usable food is visible, or it doesn't make sense to cook with what's shown, respond instead with a funny joke like: ChatGPT thinks: [your short and humorous comment here]\n. Do not explain anything."
                         },
                         {
                             "type": "image_url",

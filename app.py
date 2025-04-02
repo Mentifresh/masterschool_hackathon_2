@@ -3,6 +3,7 @@ from data_manager import DataManager
 from api_gpt import extract_ingredients_from_input
 from api_spoon import find_recipes_by_ingredients, get_detailed_recipes
 import re
+import random
 
 # Create data manager instance
 data_manager = DataManager()
@@ -140,8 +141,21 @@ class WhatsAppFoodApp:
             print("\nExtracted ingredients:")
             print(zutatenliste)
             
-            if not zutatenliste:
-                response_message = "I couldn't identify any ingredients in your image. Please send a clearer image or list the ingredients in a text message."
+            # Check if we found valid ingredients or just non-food items
+            if not zutatenliste or len(zutatenliste) < 2:
+                # No ingredients or too few ingredients found
+                humor_responses = [
+                    "I'm looking for food ingredients, but my recipe radar isn't picking up much. 🔍",
+                    "Hmm, I don't see anything I can turn into a delicious meal there. 🤔",
+                    "My recipe powers are strong, but I need actual ingredients to work with! ✨",
+                    "I'm great at suggesting recipes, but even I can't cook with what I'm seeing here. 🍳",
+                    "I searched high and low but couldn't find enough ingredients to work with. 🧐",
+                    "That's an interesting image, but I don't think it belongs in a recipe! 😄",
+                    "I'm a foodie at heart, but I need actual food ingredients to suggest recipes. 🥗"
+                ]
+                humor_message = random.choice(humor_responses)
+                
+                response_message = f"{humor_message}\n\nPlease send a photo of food ingredients or list them in a text message like 'tomatoes, chicken, pasta'."
                 self.bot.send_message(response_message)
                 return
                 
@@ -206,6 +220,22 @@ class WhatsAppFoodApp:
                 zutatenliste = extract_ingredients_from_input(zutaten_liste=clean_text)
                 print(f"Extracted ingredients: {zutatenliste}")
                 
+                # Check if we found valid ingredients or just non-food items
+                if not zutatenliste or len(zutatenliste) < 2:
+                    # Too few ingredients to make meaningful suggestions
+                    humor_responses = [
+                        "I need a bit more to work with to create something delicious! 🍽️",
+                        "My recipe creativity needs at least a few ingredients to spark. ✨",
+                        "I'm afraid that's not enough for me to suggest something tasty. 😊",
+                        "Even master chefs need more than that to make a proper meal! 👨‍🍳",
+                        "I could suggest recipes with more ingredients - one or two just isn't enough. 🥄"
+                    ]
+                    humor_message = random.choice(humor_responses)
+                    
+                    response_message = f"{humor_message}\n\nPlease provide more ingredients (at least 2-3) separated by commas, like 'chicken, rice, carrots'."
+                    self.bot.send_message(response_message)
+                    return
+                
                 if zutatenliste:
                     # Inform user we're looking for recipes
                     self.bot.send_message("Looking for recipes with your ingredients...")
@@ -226,7 +256,7 @@ class WhatsAppFoodApp:
                         self.bot.send_message(response_message)
                         return
                 else:
-                    response_message = "I couldn't identify any ingredients in your message. Please provide a list of ingredients separated by commas."
+                    response_message = "I couldn't identify any food ingredients in your message. Please provide a list of ingredients separated by commas."
                     self.bot.send_message(response_message)
                     return
         except Exception as e:
