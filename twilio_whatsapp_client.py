@@ -28,7 +28,7 @@ class WhatsAppBot:
     def setup_conversation(self):
         """Sets up the conversation - finds existing or creates new one"""
         # Check for existing conversations
-        conversations = self.client.conversations.v1.services(self.service_sid).conversations.list(limit=20)
+        conversations = self.client.conversations.v1.services(self.service_sid).conversations.list(limit=50)
         
         print("Checking for existing conversations...")
         for conv in conversations:
@@ -36,6 +36,7 @@ class WhatsAppBot:
             # We'll use the first conversation we find
             if not self.conversation:
                 self.conversation = conv
+                break
 
         # If no conversations exist, create a new one
         if not self.conversation:
@@ -85,10 +86,58 @@ class WhatsAppBot:
             return True
         except Exception as e:
             print(f"Error sending message: {e}")
-            print("Make sure you've already sent a message from your WhatsApp to +493041736523 first.")
+            print("Make sure you've already sent a message from your WhatsApp first.")
             return False
     
-    def poll_for_new_messages(self, interval=5):
+    def clear_message_history(self):
+        """Clears the tracked message history to force reprocessing of messages"""
+        self.last_processed_messages.clear()
+        print("Message history cleared. All messages will be reprocessed.")
+
+    def process_recent_messages(self, limit=20, process_all=False):
+        """Manually process the most recent messages"""
+        if not self.conversation:
+            print("No conversation available. Run setup_conversation() first.")
+            return []
+        
+        print(f"Fetching {limit} most recent messages...")
+        
+        # Get latest messages, ordered by date (newest first)
+        messages = self.client.conversations.v1.services(self.service_sid).conversations(
+            self.conversation.sid
+        ).messages.list(limit=limit, order='desc')
+        
+        # Determine which messages to process
+        messages_to_process = []
+        for message in messages:
+            if process_all or message.sid not in self.last_processed_messages:
+                messages_to_process.append(message)
+                self.last_processed_messages.add(message.sid)
+        
+        if not messages_to_process:
+            print("No new messages to process.")
+            return []
+        
+        # Process the messages
+        for message in messages_to_process:
+            # Try to fetch message details directly from API
+            message_detail = self.fetch_message_detail(message.sid)
+            if message_detail:
+                # Use the detailed message object with more information
+                message = message_detail
+            
+            # Continue with regular processing...
+            self._process_message(message)
+        
+        return messages_to_process
+
+    def _process_message(self, message):
+        """Internal method to process a single message"""
+        # If a callback function is provided, call it with the message
+        if self.message_callback:
+            self.message_callback(message)
+
+    def poll_for_new_messages(self, interval=5, limit=20, reset_history=False):
         """Polls for new messages every 'interval' seconds"""
         if not self.conversation:
             print("No conversation available. Run setup_conversation() first.")
@@ -97,48 +146,44 @@ class WhatsAppBot:
         print(f"Starting to poll for new messages every {interval} seconds...")
         print("Press Ctrl+C to stop polling.")
         
-        # Get current messages to establish baseline
-        messages = self.client.conversations.v1.services(self.service_sid).conversations(
-            self.conversation.sid
-        ).messages.list(limit=20)
+        # Option to reset message history
+        if reset_history:
+            self.clear_message_history()
         
-        # Initialize with current message SIDs
-        for message in messages:
-            self.last_processed_messages.add(message.sid)
-            
-        print(f"Current message count: {len(self.last_processed_messages)}")
+        # Process existing messages initially
+        initial_messages = self.process_recent_messages(limit=limit)
+        if not initial_messages:
+            print("No new messages found initially. Waiting for new messages...")
         
         try:
             while True:
-                # Get latest messages
-                messages = self.client.conversations.v1.services(self.service_sid).conversations(
-                    self.conversation.sid
-                ).messages.list(limit=20)
+                # Get latest messages and process any new ones
+                new_messages = self.process_recent_messages(limit=limit)
                 
-                # Check for new messages by comparing SIDs
-                new_messages = []
-                for message in messages:
-                    if message.sid not in self.last_processed_messages:
-                        new_messages.append(message)
-                        self.last_processed_messages.add(message.sid)
-                
-                # Process and display new messages
-                if new_messages:
-                    print(f"New message! ({len(new_messages)} new messages)")
-                    
-                    # Process the new messages (newest first)
-                    for message in new_messages:
-                        print(f"From: {message.author if hasattr(message, 'author') else 'unknown'}, Body: {message.body}")
-                        
-                        # If a callback function is provided, call it with the message
-                        if self.message_callback:
-                            self.message_callback(message)
+                # If no new messages, just wait
+                if not new_messages:
+                    # Wait for the next polling interval
+                    time.sleep(interval)
+                    continue
                 
                 # Wait for the next polling interval
                 time.sleep(interval)
                 
         except KeyboardInterrupt:
             print("\nStopped polling for messages.")
+
+    def fetch_message_detail(self, message_sid):
+        """Fetch detailed message information directly from the API"""
+        try:
+            # Get message detail from the Conversations API
+            message_detail = self.client.conversations.v1.services(self.service_sid).conversations(
+                self.conversation.sid
+            ).messages(message_sid).fetch()
+            
+            return message_detail
+        except Exception as e:
+            print(f"Error fetching message detail: {e}")
+            return None
 
 
 if __name__ == "__main__":
