@@ -31,10 +31,10 @@ def recipe_details(recipe_name):
     user_selected_recipe = None
     for recipe in recipes:
         # wenn der ausgewählten Rezept-Namen von json gleich der ausgewählte Rezept-Namen
-        if recipe["recipe_name"] == recipe_name:
+        if recipe["name"] == recipe_name:
             user_selected_recipe = recipe
             break
-    return render_template("rezept_detail.html", user_selected_recipe)
+    return render_template("rezept_detail.html")
 
 
 #if __name__ == "__main__":

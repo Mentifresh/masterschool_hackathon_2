@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NutriScan</title>
-    <link rel="stylessheet" href="style.css">
+    <style>
+        p{
+        font-family: sans-serif;
+        padding: 2rem;
+        }
+        .button {
+            display: inline-block;
+            padding:10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color:white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .recipe-detail img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,8 +34,8 @@
         {% for recipe in all_found_recipes %}
             <article>
                 <h2 class="recipe--block-title">{{ recipe["name"] }}</h2>
-                <img class="recipe-bild" src="{{ url_for('static', filename=recipe['bild']) }}" alt="{{ recipe["name"] }}">
-                <p> {{ recipe["name"] }} ... Genuss pur!</p>  
+                <img class="recipe-detail img" src="{{ recipe["bild"] }}" alt="{{ recipe["name"] }}">
+                <a class="button" href="{{ url_for('recipe_details', recipe_name=recipe["name"]) }}">Schau Mal {{ recipe["name"] }} an... Genuss pur!</a>  
             </article>
         {% endfor %}  
     </div>
