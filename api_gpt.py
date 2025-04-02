@@ -31,7 +31,13 @@ def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list =
                     "content": [
                         {
                             "type": "text",
-                            "text": "You are helping to suggest a recipe based on a fridge photo. Only list food ingredients that are suitable for cooking a proper dish. Exclude drinks, jars, sauces, and non-edible items. Focus on visible fruits, vegetables, dairy, meats, and other fresh food. Only return a short, comma-separated list in English, no explanations."
+                            "text": "You are a professional chef and nutritionist helping people make meals from what they have in their fridge. "
+                                     "Analyze the image of the fridge content. "
+                                     "If you see clear food ingredients like fruits, vegetables, dairy, or meat, respond with this format only:\n"
+                                     "INGREDIENTS: ingredient1, ingredient2, ingredient3\n"
+                                     "If no usable food is visible, or it doesn't make sense to cook with what's shown, respond instead with this format only:\n"
+                                     "FUNNY: [your short and humorous comment here]\n"
+                                     "Do not explain anything. Only respond with one line in one of these two formats."
                         },
                         {
                             "type": "image_url",
@@ -43,8 +49,19 @@ def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list =
             max_tokens=300,
             temperature=0.3
         )
-        gpt_text = response.choices[0].message.content
-        return [item.strip().lower() for item in gpt_text.split(",")]
+        gpt_text = response.choices[0].message.content.strip()
+
+        if gpt_text.startswith("INGREDIENTS:"):
+            zutaten = gpt_text[len("INGREDIENTS:"):].split(",")
+            return [item.strip().lower() for item in zutaten]
+
+        if gpt_text.startswith("FUNNY:"):
+            print(f"\n GPT meint dazu: {gpt_text[len('FUNNY:'):].strip()}")
+            return []
+
+        print("\n Unerwartete GPT-Antwort:")
+        print(gpt_text)
+        return []
 
     if zutaten_liste:
         # Falls String übergeben wurde (nicht Liste), umwandeln
@@ -52,8 +69,13 @@ def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list =
             zutaten_liste = [z.strip() for z in zutaten_liste.split(",")]
 
         prompt = (
-            "Convert this list of food ingredients into clean, comma-separated English keywords for cooking APIs like Spoonacular:\n"
-            + ", ".join(zutaten_liste)
+            "You are a professional chef and nutritionist. The user sends you a list of ingredients. "
+            "If these look usable for cooking, convert them into clean, comma-separated English keywords for use in cooking APIs like Spoonacular, in this format:\n"
+            "INGREDIENTS: ingredient1, ingredient2, ingredient3\n"
+            "If the list seems unusable for cooking or meaningless, respond with this format:\n"
+            "FUNNY: [your short and humorous comment here]\n"
+            "Only return one of these two formats.\n\n"
+            "Here is the list:\n" + ", ".join(zutaten_liste)
         )
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -61,7 +83,18 @@ def extract_ingredients_from_input(image_path: str = None, zutaten_liste: list =
             max_tokens=150,
             temperature=0.3
         )
-        gpt_text = response.choices[0].message.content
-        return [item.strip().lower() for item in gpt_text.split(",")]
+        gpt_text = response.choices[0].message.content.strip()
+
+        if gpt_text.startswith("INGREDIENTS:"):
+            zutaten = gpt_text[len("INGREDIENTS:"):].split(",")
+            return [item.strip().lower() for item in zutaten]
+
+        if gpt_text.startswith("FUNNY:"):
+            print(f"\n GPT meint dazu: {gpt_text[len('FUNNY:'):].strip()}")
+            return []
+
+        print("\n Unerwartete GPT-Antwort:")
+        print(gpt_text)
+        return []
 
     return []
