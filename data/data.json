@@ -139,6 +139,53 @@
             "1 pound ripe watermelon"
           ],
           "saved_at": "2025-04-02T19:08:54.799423"
+        },
+        {
+          "rezeptname": "Albondigas (Meatball Soup)",
+          "bild_url": "https://img.spoonacular.com/recipes/632050-556x370.jpg",
+          "gesundheitsbewertung": 100.0,
+          "rezept_url": "http://www.foodista.com/recipe/N83M83CQ/albondigas-meatball-soup",
+          "video_url": "Kein Video verfügbar",
+          "zubereitung": [
+            "Preheat oven to 350 degrees.",
+            "Combine beef, onion,  cup celery, garlic, cumin, eggs, rice, parsley, oregano, and bread crumbs, and salt and pepper.",
+            "Mix well. Form into 30 small meatballs.",
+            "Bake on baking sheet at 350 degrees for 20 minutes, set aside.",
+            "Place the potatoes in boiling water and cook until tender, but not too soft.",
+            "Drain and set aside.",
+            "Heat olive oil in a large stock pot.",
+            "Add carrots,  cup celery, and garlic.Saut for about 5 minutes.",
+            "Add the tomatoes, chili flakes, and the potatoes.",
+            "Add the chicken stock and season to taste with salt and pepper.Bring to boil, reduce heat and simmer for 30 minutes.",
+            "Add meatballs and simmer on low heat until ready to serve.",
+            "Serve hot and garnish with cilantro and lime and corn tortillas."
+          ],
+          "zutaten": [
+            "2 tablespoons breadcrumbs",
+            "1/2 cup thinly sliced carrots",
+            "1/4 cup finely diced celery",
+            "1/2 cup chopped celery",
+            "8 cups chicken stock",
+            "1 bunch cilantro, chopped",
+            "corn tortillas to serve",
+            "1/2 teaspoon cumin",
+            "2 eggs",
+            "1 tablespoon fresh chopped parsley",
+            "1 tablespoon minced garlic",
+            "5 wholes cloves garlic",
+            "1 1/2 pounds ground beef",
+            "1/2 teaspoon ground pepper",
+            "1 lime",
+            "4 tablespoons olive oil",
+            "1/2 cup finely diced onion",
+            "1 teaspoon dried oregano",
+            "5 potatoes, diced",
+            "1 teaspoon red chili flakes",
+            "1 cup chopped Roma Tomatoes",
+            "1/2 teaspoon salt",
+            "1/2 cup uncooked white rice"
+          ],
+          "saved_at": "2025-04-02T19:38:36.872454"
         }
       ]
     }
