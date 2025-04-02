@@ -4,6 +4,11 @@ from api_gpt import extract_ingredients_from_input
 from api_spoon import find_recipes_by_ingredients, get_detailed_recipes
 import re
 import random
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Create data manager instance
 data_manager = DataManager()
@@ -15,6 +20,10 @@ class WhatsAppFoodApp:
         # Store last recipe suggestion for simple selection
         self.last_suggested_recipes = []
         self.bot = WhatsAppBot(message_callback=self.handle_message)
+        
+        # Current user tracking - use phone number from environment variable
+        self.current_user = os.environ.get("your_whatsapp")
+        print(f"Initializing app with user phone: {self.current_user}")
     
     def handle_message(self, message):
         """Process incoming WhatsApp messages and implement business logic"""
@@ -288,6 +297,9 @@ class WhatsAppFoodApp:
         # Get the selected recipe (adjust for 0-based indexing)
         selected_recipe = self.last_suggested_recipes[recipe_num - 1]
         
+        # Save the recipe to the user's profile
+        data_manager.save_recipe_for_user(self.current_user, selected_recipe)
+        
         # Send the detailed recipe information
         self._send_detailed_recipe(selected_recipe)
     
@@ -356,8 +368,12 @@ class WhatsAppFoodApp:
             if len(zubereitung) > 10:
                 response += "...\n"
         
-        # Add link to full recipe
-        response += f"\n🔗 *View full recipe:* {rezept_url}\n\n"
+        # Add link to full recipe - make it more visible
+        response += "\n*🔗 RECIPE LINK:*\n"
+        response += f"{rezept_url}\n\n"
+        
+        # Add saved confirmation
+        response += "✅ This recipe has been saved to your profile!\n\n"
         
         # Add footer
         response += "Want to try another recipe? Send me new ingredients or a photo of your fridge! 🥗"
@@ -395,7 +411,14 @@ class WhatsAppFoodApp:
 
 # Run the application when executed directly
 if __name__ == "__main__":
+    print("=== Welcome to NutriScan ===")
+    print("I'll help you find recipes based on the ingredients you have.")
+    print("Starting the application...\n")
+    
+    # Initialize the application
     app = WhatsAppFoodApp()
+    
+    # Start the application
     app.run()
 
 
